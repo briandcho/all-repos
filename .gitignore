@@ -1,5 +1,6 @@
 *.egg-info
 *.pyc
+*.swp
 /.mypy_cache
 /.pytest_cache
 /.coverage
