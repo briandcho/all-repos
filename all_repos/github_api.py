@@ -20,8 +20,7 @@ def _parse_link(lnk: Optional[str]) -> Dict[str, str]:
     ret = {}
     parts = lnk.split(',')
     for part in parts:
-        link, _, rel = part.partition(';')
-        link, rel = link.strip(), rel.strip()
+        link, rel = (s.strip() for s in part.split(';', maxsplit=1))
         assert link.startswith('<') and link.endswith('>'), link
         assert rel.startswith('rel="') and rel.endswith('"'), rel
         link, rel = link[1:-1], rel[len('rel="'):-1]
