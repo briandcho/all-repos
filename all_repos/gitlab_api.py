@@ -52,17 +52,19 @@ def filter_repos_from_settings(
     return filter_repos(
         repos,
         archived=settings.archived,
+        **({'forks': settings.forks} if hasattr(settings, 'forks') else {}),
     )
 
 
 def filter_repos(
         repos: List[Dict[str, Any]], *,
-        archived: bool,
+        archived: bool, forks: bool = True,
 ) -> Dict[str, str]:
     return {
         repo['path_with_namespace']: repo['ssh_url_to_repo']
         for repo in repos
         if (
-            archived or not repo['archived']
+            (forks or 'forked_from_project' not in repo) and
+            (archived or not repo['archived'])
         )
     }
