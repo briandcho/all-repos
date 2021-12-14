@@ -65,6 +65,7 @@ def test_settings_repr():
         '    forks=False,\n'
         '    archived=False,\n'
         "    base_url='https://gitlab.com/api/v4',\n"
+        "    base_params='pagination=keyset&order_by=id&per_page=100',\n"
         '    membership=True,\n'
         '    owned=None,\n'
         '    visibility=None,\n'
@@ -80,7 +81,7 @@ def repos_response(mock_urlopen):
     archived = _resource_json('flask-autodevops')
     all_repos = [public, forked, private]
     base_url = f'{TEST_API_URL}/projects'
-    base_params = '?pagination=keyset&per_page=100&order_by=id'
+    base_params = '?pagination=keyset&order_by=id&per_page=100'
     all_url = base_url + base_params + '&archived=false'
     default_url = all_url + '&membership=true'
     private_url = default_url + '&visibility=private'

@@ -14,6 +14,7 @@ class Settings(NamedTuple):
     forks: bool = False
     archived: bool = False
     base_url: str = f'https://{DEFAULT_HOST}/api/v4'
+    base_params: str = 'pagination=keyset&order_by=id&per_page=100'
     membership: Optional[bool] = True
     owned: Optional[bool] = None
     visibility: Optional[str] = None
@@ -23,7 +24,6 @@ class Settings(NamedTuple):
 
 
 def list_repos(settings: Settings) -> Dict[str, str]:
-    base_params = '?pagination=keyset&per_page=100&order_by=id'
     params = settings_to_url_params(settings)
     repos = gitlab_api.get_all(
         f'{settings.base_url}/projects?{settings.base_params}{params}',
