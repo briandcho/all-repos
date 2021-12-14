@@ -1,10 +1,17 @@
 import json
+import os
+import ssl
 import urllib.request
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import NamedTuple
 from typing import Optional
+
+
+NO_SSL = ssl.create_default_context()
+NO_SSL.check_hostname = False
+NO_SSL.verify_mode = ssl.CERT_NONE
 
 
 class Response(NamedTuple):
@@ -29,7 +36,11 @@ def _parse_link(lnk: Optional[str]) -> Dict[str, str]:
 
 
 def req(url: str, **kwargs: Any) -> Response:
-    resp = urllib.request.urlopen(urllib.request.Request(url, **kwargs))
+    req = urllib.request.Request(url, **kwargs)
+    if os.environ.get('ALL_REPOS_SSL_NO_VERIFY', 'false') == 'true':
+        resp = urllib.request.urlopen(req, context=NO_SSL)
+    else:
+        resp = urllib.request.urlopen(req)
     # TODO: https://github.com/python/typeshed/issues/2333
     from typing import cast
     resp = cast(urllib.response.addinfourl, resp)

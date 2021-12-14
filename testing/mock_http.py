@@ -2,7 +2,7 @@ import io
 
 
 def urlopen_side_effect(url_mapping):
-    def urlopen(request):
+    def urlopen(request, **kwargs):
         return url_mapping[request.get_full_url()]
     return urlopen
 
